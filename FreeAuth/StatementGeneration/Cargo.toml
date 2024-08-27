@@ -1,0 +1,22 @@
+[package]
+name = "email"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+"rand_core" = "0.9.0-alpha.1"
+"rand" = "0.8.4"
+"ark-groth16" = "^0.4.0"
+"hex" = "0.4.3"
+ark-relations = "^0.4.0"
+ark-std = "^0.4.0"
+ark-bls12-381 = "^0.4"
+ark-crypto-primitives = { version = "^0.4", features = ["r1cs","crh"], default-features = false }
+ark-ec = "^0.4"
+ark-ed-on-bls12-381 = { version = "^0.4", features = ["r1cs"] }
+ark-ff = "^0.4"
+ark-r1cs-std = "^0.4"
+sha2 = "^0.10.0"
+ark-serialize = "^0.4.0"
