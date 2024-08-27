@@ -1,6 +1,6 @@
 # FreeAuth
 
-FreeAuth is a novel universal and privacy-enhanced email ownership verification scheme that allows users to selectively disclose information associated with their email addresses. The submitted artifact includes the FreeAuth prototype and a prototype of an integrated email client, which mainly displays email ownership authentication, commitment generation, and statement generation. Section 5 of the accepted paper presents the test results of these features. We will submit the complete FreeAuth prototype code along with a virtual machine image containing the correctly compiled binaries.
+FreeAuth(https://anonymous.4open.science/r/freeauth-543F) is a novel universal and privacy-enhanced email ownership verification scheme that allows users to selectively disclose information associated with their email addresses. The submitted artifact includes the FreeAuth prototype and a prototype of an integrated email client, which mainly displays email ownership authentication, commitment generation, and statement generation. Section 5 of the accepted paper presents the test results of these features. We will submit the complete FreeAuth prototype code along with a virtual machine image containing the correctly compiled binaries.
 
 ## Overview
 
