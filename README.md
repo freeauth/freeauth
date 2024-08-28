@@ -1,40 +1,20 @@
 # FreeAuth
 
-FreeAuth(https://anonymous.4open.science/r/freeauth-543F) is a novel universal and privacy-enhanced email ownership verification scheme that allows users to selectively disclose information associated with their email addresses. The submitted artifact includes the FreeAuth prototype and a prototype of an integrated email client, which mainly displays email ownership authentication, commitment generation, and statement generation. Section 5 of the accepted paper presents the test results of these features. We will submit the complete FreeAuth prototype code along with a virtual machine image containing the correctly compiled binaries.
-
-## Overview
-
-This submitted artifact includes the complete code for the FreeAuth prototype and showcases its three main features: email ownership authentication, commitment generation and statement generation.
-
-It is worth noting that FreeAuth is designed to support TLSv1.2 and TLSv1.3 connections, and is compatible with three email transmission protocols: SMTP, IMAP and POP3, as well as three authentication protocols: PLAIN, LOGIN and XOAUTH2. 
-
-However, as mentioned in the submitted artifact, in the prototype we focus on adapting to TLSv1.3 and showcase all the features of FreeAuth based on SMTP protocol.
-
-A comparison of support is as follows:
-
-|                             | Prototype Support   | Scheme Support      |
-| --------------------------- | ------------------- | ------------------- |
-| TLS Version                 | TLSv1.3             | TLSv1.3,TLSv1.2     |
-| email transmission protocol | SMTP                | SMTP, IMAP, POP3    |
-| authentication method       | PLAIN,LOGIN,XOAUTH2 | PLAIN,LOGIN,XOAUTH2 |
-
-In order to adapt the FreeAuth prototype to TLSv1.2, additional development work is required.
-
-However，The prototype does not require additional development for IMAP and POP3, but it does require the user to design an ideal interaction template according to the corresponding transmission protocol (see Section 3.3  in the artical for more details), and then complete the specific interaction steps according to the template.
+FreeAuth(https://anonymous.4open.science/r/freeauth-543F) is a novel universal and privacy-enhanced email ownership verification scheme that allows users to selectively disclose information associated with their email addresses. The submitted artifact includes the FreeAuth prototype and a prototype of an integrated email client, which mainly accomplish email ownership authentication, commitment generation, and statement generation. Section 5 of the submitted paper presents the test results of these features. We will submit the complete FreeAuth prototype code along with a virtual machine image containing the correctly compiled binaries.
 
 ## Components
 
 FreeAuth is primarily concerned with interactions between three parties (see Section 3.1 for more details)：
 
-- **Prover(Client)**: Prover is the entity seeking to demonstrate ownership of a specific email account to the verifier, and participates in email ownership authentication, commitment generation, and statement generation.
-- **Verifier:** Verifier represents the applications or services interested in confirming the ownership of a client’s email address, and participates in email ownership authentication, commitment generation.
+- **Prover(Client)**: Prover is the entity seeking to demonstrate ownership of a specific email address to the Verifier, and participates in email ownership authentication, commitment generation, and statement generation.
+- **Verifier:** Verifier represents the applications or services interested in confirming the ownership of a Prover’s email address, and participates in email ownership authentication, commitment generation.
 - **Server:** Server refers to any email service provider (e.g. Gmail, Outlook, etc.), and only participates in email ownership authentication. Meanwhile, Server does not need to make any changes for FreeAuth.
 
 We categorize and demonstrate the functionality of FreeAuth into three parts: email ownership authentication, commitment generation, and statement generation:
 
 - **Email Ownership Authentication:**  In this section, the Prover connects with the Verifier using TLS Oracle, followed by a connection with the Server for standard email authentication. The core functions are implemented in **FreeAuth/TestSMTP*.cpp**. Further details of the function can be found in Section 3.4.
-- **Commitment Generation:**  In this section, the Prover interacts with the Verifier and generates a commitment to the data exchanged during the email ownership authentication process. The core functions are implemented in **FreeAuth/TestSingleCommit*.cpp**. Further details of the function can be found in Appendix F.1.
-- **Statement Generation：**In this section, the  Prover independently selectively discloses information related to email addresses through non-interactive zero-knowledge proofs(ZKPs). The core functions are implemented in **FreeAuth/StatementGenaration**. Further details of the function can be found in Appendix F.2.
+- **Commitment Generation:**  In this section, Prover interacts with Verifier and generates a commitment to the data exchanged during the email ownership authentication process. The core functions are implemented in **FreeAuth/TestSingleCommit*.cpp**. Further details of the function can be found in Appendix F.1.
+- **Statement Generation：**In this section, Prover independently selectively discloses information related to email addresses through non-interactive zero-knowledge proofs(ZKPs). The core functions are implemented in **FreeAuth/StatementGenaration**. Further details of the function can be found in Appendix F.2.
 
 We provide a demo of a third-party email client to demonstrate our email ownership authentication process. The core functions are implemented in **FreeAuth/ApplicationDemo**
 
@@ -44,8 +24,8 @@ We provide a demo of a third-party email client to demonstrate our email ownersh
 
 - **FreeAuth/Lib*:** These files contain the implementation of FreeAuth's base functionality, including 2PC-AES-GCM and more. 
 - **FreeAuth/TestSMTP*:** These files contain the implementation of email ownership authentication for Prover, Verifier and Server. A local presentation of the email ownership authentication functionality can be achieved by running these three files.
-- **FreeAuth/TestSingleCommit*:** These files contain the implementation of commitment generation for Prover and Verifier.  A local presentation of the commitment generation functionality can be achieved by running these two files. 
-- **FreeAuth/StatementGeneration:** This folder contains zero-knowledge proof code for three statements generation based on [arkworks-rs](https://github.com/arkworks-rs/groth16.git). A local presentation of  zero-knowledge proof generation for the three statements can be achieved by running the code.
+- **FreeAuth/TestSingleCommit*:** These files contain the implementation of commitment generation for Prover and Verifier. A local presentation of the commitment generation functionality can be achieved by running these two files. 
+- **FreeAuth/StatementGeneration:** This folder contains zero-knowledge proof code for three statements generation based on [arkworks-rs](https://github.com/arkworks-rs/groth16.git). A local presentation of zero-knowledge proof generation for the three statements can be achieved by running these files.
 - **FreeAuth/ApplicationDemo:** This folder contains the email client demo based on VUE3.js and Electron, integrated with FreeAuth's email ownership authentication.
 
 **boringssl/:** This directory contains a tweaked version of  [BoringSSL](https://github.com/google/boringssl.git). BoringSSL is a fork of OpenSSL that is designed to meet Google's needs. DiStefano uses BoringSSL for TLS functionality, so we inherited it and made some more modifications for FreeAuth.
@@ -71,7 +51,7 @@ sudo apt -y install cmake make gcc g++ rustc cargo golang git libssl-dev
 ### Building FreeAuth
 
 ```
-git clone https://github.com/didnet/Hades.git
+git clone https://anonymous.4open.science/r/freeauth-543F
 cd freeauth
 ./build.sh
 ```
