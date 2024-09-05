@@ -6,6 +6,10 @@ project_build_out="$project_root/build"
 rust_project_root="$project_root/FreeAuth/StatementGeneration"
 circuits_path="$project_root/2pc/key-derivation"
 export CARGO_TARGET_DIR="$project_build_out"
+if [ -f "$project_root/2pc" ]; then
+    rm "$project_root/2pc"
+    ln -s "$project_root/DiStefano/2pc" "$project_root/2pc"
+fi
 
 stage_print() {
     echo "========================================"
@@ -13,10 +17,6 @@ stage_print() {
     date
     echo "========================================"
 }
-
-# Install dependencies
-sudo apt update
-sudo apt -y install cmake make gcc g++ rustc cargo golang git libssl-dev
 
 stage_print "Run cmake configuration"
 test -d "$project_build_out" && rm -rf "$project_build_out"
