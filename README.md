@@ -40,19 +40,26 @@ We provide a demo of a third-party email client to demonstrate our email ownersh
 
 ## How to build
 
-### Install dependencies
+### Testing on **an** Artifact VM
+
+We have completed the deployment and compilation of FreeAuth on a public Artifact VM provided by the committee, which you can access directly to run the compiled files. Since the committee does not allow the VM password to be made public, please refer to the comment on HotCRP for the connection details and password. After connecting to the Artifact VM, execute the following commands to run the test sample.
 
 ```
-sudo apt update
-sudo apt install build-essential
-sudo apt -y install cmake make gcc g++ rustc cargo golang git libssl-dev
+cd freeauth
+./run.sh
 ```
+
+**However, if you want to deploy  FreeAuth locally, please do the following.**
 
 ### Building FreeAuth
 
+**Recommended Environment:**  Ubuntu 22.04, 4 cores, 16GB memory, 40GB Disk. To run locally please make sure  FreeAuth has at least 4.2GB of memory to use.
+
+Currently, you cannot use `git clone` to download because it is not supported by the anonymous repository we are using. Users need to manually download the zip from https://anonymous.4open.science/r/freeauth-543F, unzip it, and then execute the following commands.
+
 ```
-git clone https://anonymous.4open.science/r/freeauth-543F
 cd freeauth
+chmod +x build.sh run.sh
 ./build.sh
 ```
 
@@ -62,7 +69,7 @@ cd freeauth
 ./run.sh
 ```
 
-By running **run.sh**, we demonstrate email ownership authentication, commitment generation and statement generation in turn. The test results in Section 5.1 for the submitted article are derived from the same program run in our experimental setup.
+By running **run.sh**, we demonstrate email ownership authentication(Test 1), commitment generation(Test 2) and statement generation(Test 3) in turn. The test results in Section 5.1 for the submitted article are derived from the same program run in our experimental setup.
 
 In the submitted article test, our experimental setup is as follows:
 
@@ -286,12 +293,4 @@ cd FreeAuth/ApplicationDemo
 npm install
 npm run serve
 ```
-
-
-
-
-
-
-
-
 
