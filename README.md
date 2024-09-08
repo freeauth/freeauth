@@ -52,8 +52,10 @@ cd freeauth
 **However, if you want to deploy  FreeAuth locally, please do the following.**
 
 ### Install dependencies
+```
 sudo apt update
 sudo apt -y install cmake make gcc g++ rustc cargo golang git libssl-dev
+```
 
 ### Building FreeAuth
 
