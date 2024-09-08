@@ -23,7 +23,7 @@ test -d "$project_build_out" && rm -rf "$project_build_out"
 mkdir -p "$project_build_out"
 cmake -S "$project_root" -B "$project_build_out"
 
-stage_print "Now comile the C/C++ project"
+stage_print "Now compile the C/C++ project"
 make -C "$project_build_out" -j"$(nproc)"
 
 stage_print "Derive the 2PC circuits"
