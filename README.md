@@ -51,6 +51,10 @@ cd freeauth
 
 **However, if you want to deploy  FreeAuth locally, please do the following.**
 
+### Install dependencies
+sudo apt update
+sudo apt -y install cmake make gcc g++ rustc cargo golang git libssl-dev
+
 ### Building FreeAuth
 
 **Recommended Environment:**  Ubuntu 22.04, 4 cores, 16GB memory, 40GB Disk. To run locally please make sure  FreeAuth has at least 4.2GB of memory to use.
