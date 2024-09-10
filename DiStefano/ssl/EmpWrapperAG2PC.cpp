@@ -103,7 +103,7 @@ bool EmpWrapperAG2PC::exec_small_internal(
   }
   auto end_online = std::chrono::steady_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::duration<double>>(end_online - begin_online);
-  printf("[%s] online time: %.6fs\n", circuitname.c_str(), duration.count());
+  // printf("[%s] online time: %.6fs\n", circuitname.c_str(), duration.count());
 
   // Emp's amortized circuits don't output for ALICE. We'll fix that by sending
   // them over.
@@ -454,5 +454,5 @@ void EmpWrapperAG2PC::do_preproc() noexcept {
   do_preproc_dep();
   auto end_preproc = std::chrono::steady_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::duration<double>>(end_preproc - begin_preproc);
-  printf("[%s] offline time: %.6fs\n", circuitname.c_str(), duration.count());
+  // printf("[%s] offline time: %.6fs\n", circuitname.c_str(), duration.count());
 }

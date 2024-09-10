@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <getopt.h>
 
-#include "common.h"
+#include "../FreeAuth/common.h"
 #include <cstdint>
 #include <iostream>
 #include <netinet/in.h>
@@ -32,9 +32,9 @@ int length;
 
 void clientProc(int connect_sock) {
   SSL_CTX *ctx = SSL_CTX_new(TLS_method());
-  SSL_CTX_use_certificate_file(ctx, "../FreeAuth/TestCA/certs/server.crt",
+  SSL_CTX_use_certificate_file(ctx, "../TestFreeAuth/TestCA/certs/server.crt",
                                SSL_FILETYPE_PEM);
-  SSL_CTX_use_PrivateKey_file(ctx, "../FreeAuth/TestCA/keys/server.key",
+  SSL_CTX_use_PrivateKey_file(ctx, "../TestFreeAuth/TestCA/keys/server.key",
                               SSL_FILETYPE_PEM);
   SSL *cur_ssl = SSL_new(ctx);
   SSL_set_fd(cur_ssl, connect_sock);

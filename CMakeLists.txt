@@ -66,7 +66,7 @@ target_compile_options(ThreePartyEcrypt PRIVATE ${C_FLAGS})
 set(EMAILREG_EXES TestSingleCommitVerifier TestSingleCommitProver 
     TestSMTPServer      TestSMTPProver      TestSMTPVerifier)
 foreach(EXE ${EMAILREG_EXES})
-  add_executable(${EXE} FreeAuth/${EXE}.cpp)
+  add_executable(${EXE} TestFreeAuth/${EXE}.cpp)
   target_compile_options(${EXE} PRIVATE ${C_FLAGS})
   target_link_Libraries(${EXE} PRIVATE TLSAttestOpt ThreePartyEcrypt TLSAttestOpt)
 endforeach(EXE )

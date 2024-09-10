@@ -3,7 +3,7 @@ set -e
 project_root="$(dirname $0)"
 project_root="$(realpath $project_root)"
 project_build_out="$project_root/build"
-rust_project_root="$project_root/FreeAuth/StatementGeneration"
+rust_project_root="$project_root/TestFreeAuth/StatementGeneration"
 circuits_path="$project_root/2pc/key-derivation"
 export CARGO_TARGET_DIR="$project_build_out"
 stage_print() {
@@ -18,10 +18,34 @@ cd "$project_build_out"
 killall TestSMTPServer || true
 killall TestSMTPVerifier || true
 killall TestSingleCommitVerifier || true
-"$project_build_out/TestSMTPServer" &
-"$project_build_out/TestSMTPVerifier" &
+
+#
+SMTPServerLog=$(mktemp)
+SMTPVerifierLog=$(mktemp)
+SMTPProverLog=$(mktemp)
+
+"$project_build_out/TestSMTPServer" > "$SMTPServerLog" 2>&1  &
+
+"$project_build_out/TestSMTPVerifier" > "$SMTPVerifierLog" 2>&1 &
+
 sleep 0.4
-/usr/bin/time "$project_build_out/TestSMTPProver"
+"$project_build_out/TestSMTPProver" > "$SMTPProverLog" 2>&1 &
+prover_pid=$!
+
+wait $prover_pid
+
+echo "==========Output from Server============="
+cat "$SMTPServerLog"
+echo
+
+echo "==========Output from Verifier============="
+cat "$SMTPVerifierLog"
+echo
+
+echo "==========Output from Prover============="
+cat "$SMTPProverLog"
+echo
+
 sleep 0.5
 stage_print "Test2: Commitment Generation"
 "$project_build_out/TestSingleCommitVerifier" -p 18400 & 

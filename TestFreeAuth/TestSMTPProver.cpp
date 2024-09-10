@@ -6,7 +6,7 @@
 
 #include <getopt.h>
 
-#include "common.h"
+#include "../FreeAuth/common.h"
 #include "nodes/Server.hpp"
 #include "ssl/TLSSocket.hpp"
 #include "ssl/TestUtil.hpp"

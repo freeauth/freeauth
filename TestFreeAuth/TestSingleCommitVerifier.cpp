@@ -1,5 +1,5 @@
 #include <getopt.h>
-#include "common.h"
+#include "../FreeAuth/common.h"
 #include "ssl/TLSSocket.hpp"
 #include "ssl/TestUtil.hpp"
 
@@ -61,9 +61,9 @@ int main(int argc, char *argv[]) {
     }
   }
   bssl::UniquePtr<SSL_CTX> ctx(SSL_CTX_new(TLS_method()));
-  SSL_CTX_use_certificate_file(ctx.get(), "../FreeAuth/TestCA/certs/verifier.crt",
+  SSL_CTX_use_certificate_file(ctx.get(), "../TestFreeAuth/TestCA/certs/verifier.crt",
                                SSL_FILETYPE_PEM);
-  SSL_CTX_use_PrivateKey_file(ctx.get(), "../FreeAuth/TestCA/keys/verifier.key",
+  SSL_CTX_use_PrivateKey_file(ctx.get(), "../TestFreeAuth/TestCA/keys/verifier.key",
                               SSL_FILETYPE_PEM);
 
   auto pv_ctx = CreateContextWithTestCertificate(TLS_method());

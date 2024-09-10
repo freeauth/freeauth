@@ -6,7 +6,7 @@
 
 #include <getopt.h>
 
-#include "common.h"
+#include "../FreeAuth/common.h"
 #include <cstdint>
 #include <iostream>
 #include <nodes/Server.hpp>
@@ -182,7 +182,7 @@ public:
       }
     }
 
-    if (print) {
+    if (!print) {
       puts("==============Time data print==============");
       for (size_t i = 1; i < STAGE_TOTAL_NUM; i++) {
         auto duration =
@@ -322,9 +322,9 @@ int main(int argc, char *argv[]) {
     }
   }
   bssl::UniquePtr<SSL_CTX> ctx(SSL_CTX_new(TLS_method()));
-  SSL_CTX_use_certificate_file(ctx.get(), "../FreeAuth/TestCA/certs/verifier.crt",
+  SSL_CTX_use_certificate_file(ctx.get(), "../TestFreeAuth/TestCA/certs/verifier.crt",
                                SSL_FILETYPE_PEM);
-  SSL_CTX_use_PrivateKey_file(ctx.get(), "../FreeAuth/TestCA/keys/verifier.key",
+  SSL_CTX_use_PrivateKey_file(ctx.get(), "../TestFreeAuth/TestCA/keys/verifier.key",
                               SSL_FILETYPE_PEM);
   VerifierTest verifier(std::move(ctx), ip.c_str(), false, 1, false,
                         verifier_port);

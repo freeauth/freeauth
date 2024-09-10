@@ -301,9 +301,9 @@ main.pdf
 DiStefano/2pc/key-derivation/*
 
 build*/
-FreeAuth/TestCA/keys/ca.key
+TestFreeAuth/TestCA/keys/ca.key
 *.so
 *.dylib
-FreeAuth/ApplicationDemo/package-lock.json
-FreeAuth/StatementGeneration/target
+TestFreeAuth/ApplicationDemo/package-lock.json
+TestFreeAuth/StatementGeneration/target
 __pycache__

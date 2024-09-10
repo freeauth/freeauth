@@ -790,7 +790,7 @@ bool Server::read_handshake_data() noexcept {
   SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, verifier_certificate_callback);
   SSL_CTX_set_default_verify_paths(ctx);
   // Notice: the line below must be disabled in the manufacturing environment
-  X509_STORE_load_locations(ctx->cert_store, "../FreeAuth/TestCA/certs/ca_root.crt",
+  X509_STORE_load_locations(ctx->cert_store, "../TestFreeAuth/TestCA/certs/ca_root.crt",
                             NULL);
   // Notice End
   verify_fake_ssl = SSL_new(ctx);

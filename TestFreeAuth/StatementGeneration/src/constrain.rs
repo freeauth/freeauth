@@ -229,7 +229,7 @@ pub fn groth16test1() {
 
     let mut os_rng = OsRng;
     let copy_hashchecker = hashchecker.clone();
-    println!("========Statement Example 1: Authentication of email domainsAuthentication of email domains=========");
+    println!("Statement Example 1: Authentication of email domainsAuthentication of email domains");
     println!("Creating parameters...");
     let (pk, vk) = {
         let c = ParseProofDemo1 {
@@ -353,7 +353,7 @@ pub fn groth16test2() {
     let mut os_rng = OsRng;
     let copy_hashchecker1 = hashchecker1.clone();
     let copy_hashchecker2 = hashchecker2.clone();
-    println!("========Statement Example 2: Authentication of email addresses and generation of identifiers=========");
+    println!("Statement Example 2: Authentication of email addresses and generation of identifiers");
     println!("Creating parameters...");
     let (pk, vk) = {
         let c = ParseProofDemo2 {
@@ -456,7 +456,7 @@ pub fn groth16test3() {
 
     let mut os_rng = OsRng;
     let copy_hashchecker = hashchecker.clone();
-    println!("========Statement Example 3: Authentication of email address=========");
+    println!("Statement Example 3: Authentication of email address");
 
     println!("Creating parameters...");
     let (pk, vk) = {

@@ -1,5 +1,5 @@
 #include <getopt.h>
-#include "common.h"
+#include "../FreeAuth/common.h"
 #include "ssl/TLSSocket.hpp"
 #include "ssl/TestUtil.hpp"
 
