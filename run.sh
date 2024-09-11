@@ -12,6 +12,8 @@ stage_print() {
     date
     echo "========================================"
 }
+
+#RUN Test1: Email Ownership Authentication
 stage_print "Running test programs"
 stage_print "Test1: Email Ownership Authentication"
 cd "$project_build_out"
@@ -19,7 +21,6 @@ killall TestSMTPServer || true
 killall TestSMTPVerifier || true
 killall TestSingleCommitVerifier || true
 
-#
 SMTPServerLog=$(mktemp)
 SMTPVerifierLog=$(mktemp)
 SMTPProverLog=$(mktemp)
@@ -47,11 +48,15 @@ cat "$SMTPProverLog"
 echo
 
 sleep 0.5
+#RUN Test2: Commitment Generation
+
 stage_print "Test2: Commitment Generation"
 "$project_build_out/TestSingleCommitVerifier" -p 18400 & 
 sleep 0.3
 /usr/bin/time "$project_build_out/TestSingleCommitProver" -v 18400
 sleep 0.5
+
+#RUN Test3: Statement Generation
 stage_print "Test3: Statement Generation"
 /usr/bin/time "$project_build_out/release/email"
 
