@@ -78,7 +78,7 @@ cd freeauth
 ./run.sh
 ```
 
-### Testing in a Docker container
+### Testing in a Docker Container
 
 The environment used for docker is Ubuntu 22.04, and it takes about 4 mins to build the image.
 
@@ -92,7 +92,7 @@ sudo docker run -it freeauth
 
 ### Install dependencies
 
-Please do not modify the apt commands, such as by adding the `--no-install-recommends` option.
+Please **DO NOT** modify the apt commands, we need to install all the recommended packages.
 
 ```
 sudo apt update
