@@ -12,21 +12,22 @@ FreeAuth is primarily concerned with interactions between three parties (see Sec
 
 We categorize and demonstrate the functionality of FreeAuth into three parts: email ownership authentication, commitment generation, and statement generation:
 
-- **Email Ownership Authentication:**  In this section, the Prover connects with the Verifier using TLS Oracle, followed by a connection with the Server for standard email authentication. The core functions are implemented in **FreeAuth/TestSMTP*.cpp**. Further details of the function can be found in Section 3.4.
-- **Commitment Generation:**  In this section, Prover interacts with Verifier and generates a commitment to the data exchanged during the email ownership authentication process. The core functions are implemented in **FreeAuth/TestSingleCommit*.cpp**. Further details of the function can be found in Appendix F.1.
-- **Statement Generation：**In this section, Prover independently selectively discloses information related to email addresses through non-interactive zero-knowledge proofs(ZKPs). The core functions are implemented in **FreeAuth/StatementGenaration**. Further details of the function can be found in Appendix F.2.
+- **Email Ownership Authentication:**  In this section, the Prover connects with the Verifier using TLS Oracle, followed by a connection with the Server for standard email authentication. The core functions are implemented in **TestFreeAuth/TestSMTP*.cpp**. Further details of the function can be found in Section 3.4.
+- **Commitment Generation:**  In this section, Prover interacts with Verifier and generates a commitment to the data exchanged during the email ownership authentication process. The core functions are implemented in **TestFreeAuth/TestSingleCommit*.cpp**. Further details of the function can be found in Appendix F.1.
+- **Statement Generation：**In this section, Prover independently selectively discloses information related to email addresses through non-interactive zero-knowledge proofs(ZKPs). The core functions are implemented in **TestFreeAuth/StatementGenaration**. Further details of the function can be found in Appendix F.2.
 
-We provide a demo of a third-party email client to demonstrate our email ownership authentication process. The core functions are implemented in **FreeAuth/ApplicationDemo**
+We provide a demo of a third-party email client to demonstrate our email ownership authentication process. The core functions are implemented in **TestFreeAuth/ApplicationDemo**
 
-## Structure
+## Code Structure
 
-**FreeAuth/:** This folder contains the main FreeAuth code.
+**FreeAuth/:** This folder contains the implementation of FreeAuth's base functionality, including 2PC-AES-GCM and more. 
 
-- **FreeAuth/Lib*:** These files contain the implementation of FreeAuth's base functionality, including 2PC-AES-GCM and more. 
-- **FreeAuth/TestSMTP*:** These files contain the implementation of email ownership authentication for Prover, Verifier and Server. A local presentation of the email ownership authentication functionality can be achieved by running these three files.
-- **FreeAuth/TestSingleCommit*:** These files contain the implementation of commitment generation for Prover and Verifier. A local presentation of the commitment generation functionality can be achieved by running these two files. 
-- **FreeAuth/StatementGeneration:** This folder contains zero-knowledge proof code for three statements generation based on [arkworks-rs](https://github.com/arkworks-rs/groth16.git). A local presentation of zero-knowledge proof generation for the three statements can be achieved by running these files.
-- **FreeAuth/ApplicationDemo:** This folder contains the email client demo based on VUE3.js and Electron, integrated with FreeAuth's email ownership authentication.
+**TestFreeAuth/: **This folder contains the tests of FreeAuth's appliaction functionality, including three main parts of FreeAuth and an application demo. 
+
+- **TestFreeAuth/TestSMTP*:** These files contain the implementation of email ownership authentication for Prover, Verifier and Server. A local presentation of the email ownership authentication functionality can be achieved by running these three files.
+- **TestFreeAuth/TestSingleCommit*:** These files contain the implementation of commitment generation for Prover and Verifier. A local presentation of the commitment generation functionality can be achieved by running these two files. 
+- **TestFreeAuth/StatementGeneration:** This folder contains zero-knowledge proof code for three statements generation based on [arkworks-rs](https://github.com/arkworks-rs/groth16.git). A local presentation of zero-knowledge proof generation for the three statements can be achieved by running these files.
+- **TestFreeAuth/ApplicationDemo:** This folder contains the email client demo based on VUE3.js and Electron, integrated with FreeAuth's email ownership authentication.
 
 **boringssl/:** This directory contains a tweaked version of  [BoringSSL](https://github.com/google/boringssl.git). BoringSSL is a fork of OpenSSL that is designed to meet Google's needs. DiStefano uses BoringSSL for TLS functionality, so we inherited it and made some more modifications for FreeAuth.
 
@@ -36,7 +37,33 @@ We provide a demo of a third-party email client to demonstrate our email ownersh
 
 **2pc/:** This directory is a quick-access link to the Distefano/2pc/ folder and contains all the circuits and circuit generation files used in Distefano and FreeAuth.
 
+## **Requirements**
 
+**Recommended Environment:** Ubuntu 22.04, 4 cores, 16GB memory, 40GB Disk. 
+
+**Minimum Requirements:**
+
+- **Minimum Hardware Requirements**
+
+  - Operating System: Ubuntu 18.04 or higher
+
+  - Memory: 6GB or more
+
+  - Disk Space: 2GB or more
+
+- **Minimum Software Requirements**
+
+  - CMake: Version ≥ 3.10
+
+  - GNU Make: Version ≥ 4.1
+
+  - GCC/G++: Version ≥ 9.4
+
+  - Go (Golang): Version ≥ 1.10
+
+  - Rustc: Version ≥ 1.65
+
+  - Cargo: Version ≥ 1.65
 
 ## How to build
 
@@ -52,6 +79,7 @@ cd freeauth
 **However, if you want to deploy  FreeAuth locally, please do the following.**
 
 ### Install dependencies
+
 ```
 sudo apt update
 sudo apt -y install cmake make gcc g++ rustc cargo golang git libssl-dev
@@ -59,7 +87,7 @@ sudo apt -y install cmake make gcc g++ rustc cargo golang git libssl-dev
 
 ### Building FreeAuth
 
-**Recommended Environment:**  Ubuntu 22.04, 4 cores, 16GB memory, 40GB Disk. To run locally please make sure  FreeAuth has at least 4.2GB of memory to use.
+We've combined the build commands into a single script **build.sh**.
 
 Currently, you cannot use `git clone` to download because it is not supported by the anonymous repository we are using. Users need to manually download the zip from https://anonymous.4open.science/r/freeauth-543F, unzip it, and then execute the following commands.
 
@@ -102,32 +130,34 @@ cd build
 
 Specific test output:
 
+- Server
+
 ```
 Test1: Email Ownership Authentication
 ========================================
-TestSMTPVerifier: no process found
-TestSingleCommitVerifier: no process found
+==========Output from Server=============
 [Server] simple server listen on:127.0.0.1:18388
 [Server] Alternatively, you can run the client program by pasting the following command into another terminal:
 ./TestSMTPProver -a 127.0.0.1 -s 18388 -v VERIFIER_PORT
+[Server] New client connect in: 127.0.0.1
+[Server] Finished handshake with client 4 32
+[Server] client 4 has down.
+```
+
+- Verifier
+
+```
+==========Output from Verifier=============
 [Verifier] verifier listen on: 127.0.0.1:18389
 [Verifier] Accepting
 [Verifier] Doing handshake
 [Verifier] Finished handshake
 [Verifier] Preprocessing circuits
-[Prover] Connected to verifier
-[derive_gcm_mult_shares.txt] offline time: 3.040599s
-[derive_gcm_mult_shares.txt] offline time: 3.104828s
 [Verifier] Preproc gcm share circuit... done
-[derive_traffic_secrets_combined.txt] offline time: 3.972720s
 [Verifier] Preproc traffic circuit... done
-[derive_traffic_secrets_combined.txt] offline time: 3.911947s
-[derive_handshake_secrets_256.txt] offline time: 4.102982s
 [Verifier] Preproc HS1 circuit... done
-[derive_handshake_secrets_256.txt] offline time: 4.001782s
-[Verifier] Preproc all circuits cost 9.325852s
+[Verifier] Preproc all circuits cost 7.822756s
 [Verifier] Reading key share
-[Server] New client connect in: 127.0.0.1
 [Verifier] Creating key share
 [Verifier] Writing key share
 [Verifier] Reading server key share
@@ -136,8 +166,6 @@ TestSingleCommitVerifier: no process found
 [Verifier] Doing ectf
 [Verifier] Finished ectf
 [Verifier] Doing HS derivation
-[derive_handshake_secrets_256.txt] online time: 0.091411s
-[derive_handshake_secrets_256.txt] online time: 0.091502s
 [Verifier] Finished HS derivation
 [Verifier] Reading SHTS_c and CHTS_c commit
 [Verifier] Send SHTS_v and CHTS_v to Prover
@@ -145,84 +173,52 @@ TestSingleCommitVerifier: no process found
 [Verifier] Reading H3 for SCV and H4 for SF verification
 [Verifier] Verify [ServerCertificate,ServerCertificateVerify,ServerFinished]
 [Verifier] Deriving TS
-[derive_traffic_secrets_combined.txt] online time: 0.065533s
-[derive_traffic_secrets_combined.txt] online time: 0.065627s
 [Verifier] Deriving GCM shares
 [Verifier] Calling into derivation circuit
-[derive_gcm_mult_shares.txt] online time: 0.005628s
-[derive_gcm_mult_shares.txt] online time: 0.001788s
-[derive_gcm_mult_shares.txt] online time: 0.040578s
-[derive_gcm_mult_shares.txt] online time: 0.001877s
 [Verifier] Derived GCM shares
-==============Time data print==============
-3HS prepare between prover and verifier time: 9.369561
-Key share generation time: 0.000393
-Key exchange result computation time: 0.369749
-Handshake key derivation time: 0.141711
-Verify handshake data time: 0.053336
-AES key schedule time: 0.731550
-TPH phase total: 10.666300
-===========================================
 [Verifier] Enter attest()
+[Verifier] Preproc aes gcm_tag gcm_cfy cost 4.460715s
+[Verifier] Call aes_gcm_encrypt(), running 2PC process...
+[Verifier] Run 2PC AES-GCM encrypt successful!
+[Verifier] Call aes_gcm_encrypt(), running 2PC process...
+[Verifier] Run 2PC AES-GCM encrypt successful!
+[Verifier] Call aes_gcm_encrypt(), running 2PC process...
+[Verifier] Run 2PC AES-GCM encrypt successful!
+[Verifier] Call aes_gcm_encrypt(), running 2PC process...
+```
+
+- Prover
+
+```
+==========Output from Prover=============
+[Prover] Connected to verifier
 [Prover] Finished three party handshake
-[Server] Finished handshake with client 4 32
-[derive_gcm_tag.txt] offline time: 3.107260s
-[derive_gcm_tag.txt] offline time: 3.143276s
-[aes_ctr_joint.txt] offline time: 3.203177s
 [Prover] Server connected. Now we begin send SMTP data packets
 [Prover] Call 2PC aes_encrypt with 15 bytes, seq = 0
-[aes_ctr_joint.txt] offline time: 3.167325s
-[Verifier] Preproc aes gcm_tag gcm_cfy cost 3.949757s
-[Verifier] Call aes_gcm_encrypt(), running 2PC process...
-[aes_ctr_joint.txt] online time: 0.042498s
-[aes_ctr_joint.txt] online time: 0.043503s
-[derive_gcm_tag.txt] online time: 0.000225s
-[derive_gcm_tag.txt] online time: 0.043689s
-[Verifier] Run 2PC AES-GCM encrypt successful!
 [Prover] Run 2PC aes_encrypt successful, now send the packet to Server
 Send -> HELO emailreg
 [Prover] Call 2PC aes_encrypt with 12 bytes, seq = 1
-[Verifier] Call aes_gcm_encrypt(), running 2PC process...
-[aes_ctr_joint.txt] online time: 0.000067s
-[aes_ctr_joint.txt] online time: 0.000974s
-[derive_gcm_tag.txt] online time: 0.041914s
-[derive_gcm_tag.txt] online time: 0.086733s
-[Verifier] Run 2PC AES-GCM encrypt successful!
 [Prover] Run 2PC aes_encrypt successful, now send the packet to Server
 Send -> AUTH LOGIN
 [Prover] Call 2PC aes_encrypt with 22 bytes, seq = 2
-[Verifier] Call aes_gcm_encrypt(), running 2PC process...
-[aes_ctr_joint.txt] online time: 0.000064s
-[aes_ctr_joint.txt] online time: 0.000976s
-[aes_ctr_joint.txt] online time: 0.041981s
-[aes_ctr_joint.txt] online time: 0.042851s
-[derive_gcm_tag.txt] online time: 0.000128s
-[derive_gcm_tag.txt] online time: 0.043854s
-[Verifier] Run 2PC AES-GCM encrypt successful!
 [Prover] Run 2PC aes_encrypt successful, now send the packet to Server
 Send -> dXNlcm5hbWVAcXEuY29t
 [Prover] Call 2PC aes_encrypt with 22 bytes, seq = 3
-[Verifier] Call aes_gcm_encrypt(), running 2PC process...
-[aes_ctr_joint.txt] online time: 0.000061s
-[aes_ctr_joint.txt] online time: 0.000969s
-[aes_ctr_joint.txt] online time: 0.042005s
-[aes_ctr_joint.txt] online time: 0.042932s
-[derive_gcm_tag.txt] online time: 0.000131s
-[derive_gcm_tag.txt] online time: 0.043869s
-[Verifier] Run 2PC AES-GCM encrypt successful!
 [Prover] Run 2PC aes_encrypt successful, now send the packet to Server
 Send -> eW91cl9wYXNzd29yZA==
 ```
 
 Test results are shown:
 
+This part of the result indicates that during the email ownership authentication process, the time for preparing the circuits of TLS Oracle is  7.85s,  the time for completing the three-party handshake is 1.36s, the time for preparing the AES-GCM circuits which are uesd to encrypt the PLAIN authentication messages sent by Prover is 4.50s, and the time for completing the PLAIN authentication is 0.35s,  with a total time is 14.0s. 
+
 ```
 ==============Time data print==============
-Preproc all handshake circuits before connect to server time costs: 9.369874
-Three party handshake total time costs: 1.296978
-Preproc AES-GCM-128 circuits time costs: 3.949461
-Run threeparty SMTP auth proccess time costs: 0.351588
-Total time costs: 14.967902
+Preproc all handshake circuits before connect to server time costs: 7.857054
+Three party handshake total time costs: 1.363712
+Preproc AES-GCM-128 circuits time costs: 4.460449
+Run threeparty SMTP auth proccess time costs: 0.351344
+Total time costs: 14.032559
 ```
 
 **Test2: Commitment Generation**
@@ -239,14 +235,12 @@ cd build
 
 Specific test output:
 
+This part of the result indicates that the time for commiting the single block is 2.70s.
+
 ```
 Test2: Commitment Generation
 ========================================
-[derive_commitments_sha256_128.txt] offline time: 2.211645s
-[derive_commitments_sha256_128.txt] offline time: 2.168892s
-[derive_commitments_sha256_128.txt] online time: 0.090148s
-[derive_commitments_sha256_128.txt] online time: 0.090140s
-Commit time costs: 2.690933
+Commit time costs: 2.703217
 ```
 
 **Test3: Statement Generation**
@@ -262,26 +256,28 @@ cd build
 
 Specific test output:
 
+This part of result indicates that the time for  Prover to generate three kinds of statements is 1.24s, 2.50s, and 1.15s respectively. The time difference of these three kinds of statements is mainly caused by the number of times the SHA256 algorithm is used and the length of the content which is inputed to the SHA256 algorithm.
+
 ```
 Test3: Statement Generation
 ========================================
-========Statement Example 1: Authentication of email domainsAuthentication of email domains=========
+Statement Example 1: Authentication of email domainsAuthentication of email domains
 Creating parameters...
 Creating proofs...
-1.244783292 seconds
-========Statement Example 2: Authentication of email addresses and generation of identifiers=========
+1.24996383 seconds
+Statement Example 2: Authentication of email addresses and generation of identifiers
 Creating parameters...
 Creating proofs...
-2.488190542 seconds
-========Statement Example 3: Authentication of email address=========
+2.5040538249999997 seconds
+Statement Example 3: Authentication of email address
 Creating parameters...
 Creating proofs...
-1.164136011 seconds
+1.1486866629999999 seconds
 ```
 
 
 
-## Application Demo
+## GUI Application Demo
 
 We provide a demo of a third-party email client to demonstrate our email ownership authentication process. Provide users with visualized email ownership authentication services.
 
@@ -295,8 +291,9 @@ sudo apt install nodejs
 ### **How to run**
 
 ```
-cd FreeAuth/ApplicationDemo
+cd TestFreeAuth/ApplicationDemo
 npm install
-npm run serve
+npm run serve  # build project & run
 ```
 
+We provide support for PLAIN, LOGIN and Google OAuth2 authentication methods in this demo, you can enter the relevant information for actual testing. Please note that this demo only supports TLS link based on TLSv1.3 implementation at present, please make sure that the email server you try can provide TLSv1.3 service. Meanwhile, since the Google OAuth2 service we use is a beta service, only the email address that are added in the test list can get the OAuth2 authentication service. Since this is a blind review phase, we recommend using email addresses that do not require OAuth2 authentication for experimental testing.
