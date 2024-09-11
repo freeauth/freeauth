@@ -72,17 +72,31 @@ We provide a demo of a third-party email client to demonstrate our email ownersh
 We have completed the deployment and compilation of FreeAuth on a public Artifact VM provided by the committee, which you can access directly to run the compiled files. Since the committee does not allow the VM password to be made public, please refer to the comment on HotCRP for the connection details and password. After connecting to the Artifact VM, execute the following commands to run the test sample.
 
 ```
+To connect use "ssh artifacts@acsac-x7e8-228-base.artifacts.measurement.network'
+password: see HotCRP
 cd freeauth
 ./run.sh
+```
+
+### Testing in a Docker container
+
+The environment used for docker is Ubuntu 22.04, and it takes about 4 mins to build the image.
+
+```
+sudo snap install docker  #install docker
+sudo docker build -t freeauth .  
+sudo docker run -it freeauth    
 ```
 
 **However, if you want to deploy  FreeAuth locally, please do the following.**
 
 ### Install dependencies
 
+Please do not modify the apt commands, such as by adding the `--no-install-recommends` option.
+
 ```
 sudo apt update
-sudo apt -y install cmake make gcc g++ rustc cargo golang git libssl-dev
+sudo apt -y install cmake make gcc g++ rustc cargo golang git libssl-dev time psmisc
 ```
 
 ### Building FreeAuth
@@ -96,6 +110,8 @@ cd freeauth
 chmod +x build.sh run.sh
 ./build.sh
 ```
+
+Note: 一些时候由于网络问题会出现编译中途失败的情况，主要出现在go仓库安装的部分请重新运行一次。
 
 ### Test and Benchmark
 
@@ -229,7 +245,7 @@ Specific running commands:
 
 ```
 cd build
-./TestSingleCommitVerifier -p 18400
+./TestSingleCommitVerifier -p 18400  
 ./TestSingleCommitProver -v 18400
 ```
 
@@ -251,12 +267,12 @@ Specific running commands:
 
 ```
 cd build
-./release/email
+./release/email 
 ```
 
 Specific test output:
 
-This part of result indicates that the time for  Prover to generate three kinds of statements is 1.24s, 2.50s, and 1.15s respectively. The time difference of these three kinds of statements is mainly caused by the number of times the SHA256 algorithm is used and the length of the content which is inputed to the SHA256 algorithm.
+This part of result indicates that the time for  Prover to generate three kinds of statements is 1.24s,  2.50s, and 1.15s respectively. The time difference of these three kinds of statements is mainly caused by the number of times the SHA256 algorithm is used and the length of the content which is inputed to the SHA256 algorithm.
 
 ```
 Test3: Statement Generation
@@ -281,6 +297,8 @@ Creating proofs...
 
 We provide a demo of a third-party email client to demonstrate our email ownership authentication process. Provide users with visualized email ownership authentication services.
 
+We provide support for PLAIN, LOGIN and Google OAuth2 authentication methods in this demo, you can enter the relevant information for actual testing. Please note that this demo only supports TLS link based on TLSv1.3 implementation at present, please make sure that the email server you try can provide TLSv1.3 service. Meanwhile, since the Google OAuth2 service we use is a beta service, only the email address that are added in the test list can get the OAuth2 authentication service. Since this is a blind review phase, we recommend using email addresses that do not require OAuth2 authentication for experimental testing.
+
 ### How to build
 
 ```
@@ -296,4 +314,5 @@ npm install
 npm run serve  # build project & run
 ```
 
-We provide support for PLAIN, LOGIN and Google OAuth2 authentication methods in this demo, you can enter the relevant information for actual testing. Please note that this demo only supports TLS link based on TLSv1.3 implementation at present, please make sure that the email server you try can provide TLSv1.3 service. Meanwhile, since the Google OAuth2 service we use is a beta service, only the email address that are added in the test list can get the OAuth2 authentication service. Since this is a blind review phase, we recommend using email addresses that do not require OAuth2 authentication for experimental testing.
+
+
