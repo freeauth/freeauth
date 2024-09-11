@@ -111,8 +111,6 @@ chmod +x build.sh run.sh
 ./build.sh
 ```
 
-Note: 一些时候由于网络问题会出现编译中途失败的情况，主要出现在go仓库安装的部分请重新运行一次。
-
 ### Test and Benchmark
 
 ```
