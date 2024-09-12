@@ -78,12 +78,15 @@ cd freeauth
 ./run.sh
 ```
 
-### Testing in a Docker Container
+### Testing in a Docker container
 
 The environment used for docker is Ubuntu 22.04, and it takes about 4 mins to build the image.
 
+Download the zip from https://anonymous.4open.science/r/freeauth-543F, unzip it, and then execute the following commands.
+
 ```
-sudo snap install docker  #install docker
+cd freeauth
+sudo snap refresh && sudo snap install docker  #install docker
 sudo docker build -t freeauth .  
 sudo docker run -it freeauth    
 ```
@@ -92,7 +95,7 @@ sudo docker run -it freeauth
 
 ### Install dependencies
 
-Please **DO NOT** modify the apt commands, we need to install all the recommended packages.
+Please **DO NOT** modify the apt commands, we need to install all the recommend packages when process the following .
 
 ```
 sudo apt update
@@ -121,7 +124,7 @@ By running **run.sh**, we demonstrate email ownership authentication(Test 1), co
 
 In the submitted article test, our experimental setup is as follows:
 
-- We conducted our evaluation on an Ubuntu 20.04 environment. The client was executed on a consumer-grade machine (Intel i7-11800H@3200MHz 16Core CPU and 16GB RAM ), In contrast, the Verifier and Server were run on server-grade machines (Virtualized Intel i9-13900K@7200MHz 32-Core CPU and Virtualized 16GB RAM). 
+- We conducted our evaluation on an Ubuntu 22.04 environment. The client was executed on a consumer-grade machine (Intel i7-11800H@3200MHz 16Core CPU and 16GB RAM ), In contrast, the Verifier and Server were run on server-grade machines (Virtualized Intel i9-13900K@7200MHz 32-Core CPU and Virtualized 16GB RAM). 
 - To simulate both LAN and WAN environments, we controlled the network latency between nodes, establishing a round-trip time of approximately 4ms for LAN and 20ms for WAN, with a bandwidth of about 1 Gbps.
 
 In order to make a better and faster presentation of the experimental results, for this test we only show the results of the same program running locally. Since there is no limitation on network bandwidth and latency, the local test results will be faster than the results shown in the submitted paper. <u>The results shown in the following sections are the results of local test runs on the VM resources provided by the committee</u> (4 cores, 16GB memory, 40GB Disk, Ubuntu 22.04).
@@ -133,12 +136,18 @@ In order to make a better and faster presentation of the experimental results, f
 
 We implemented this part using C++. In the test, Server performs the normal SMTP email server authentication and response, and Prover and Verifier jointly perform the PLAIN authentication mechanism to complete the ownership authentication. The test execution results are as follows, showing the flow of interaction between the three parties. 
 
+Note: After each execution of Test 1, please wait for a period of time before repeating the execution, the occupied ports need a period of time to be released automatically.
+
 Specific running instructions:
 
 ```
 cd build
+#Execute the following three commands in different terminals  
+#Terminal 1
 ./TestSMTPServer
+#Terminal 2
 ./TestSMTPVerifier
+#Terminal 3
 ./TestSMTPProver
 ```
 
@@ -222,8 +231,6 @@ Send -> dXNlcm5hbWVAcXEuY29t
 Send -> eW91cl9wYXNzd29yZA==
 ```
 
-Test results are shown:
-
 This part of the result indicates that during the email ownership authentication process, the time for preparing the circuits of TLS Oracle is  7.85s,  the time for completing the three-party handshake is 1.36s, the time for preparing the AES-GCM circuits which are uesd to encrypt the PLAIN authentication messages sent by Prover is 4.50s, and the time for completing the PLAIN authentication is 0.35s,  with a total time is 14.0s. 
 
 ```
@@ -243,7 +250,10 @@ Specific running commands:
 
 ```
 cd build
-./TestSingleCommitVerifier -p 18400  
+#Execute the following two commands in different terminals  
+#Terminal 1
+./TestSingleCommitVerifier -p 18400
+#Terminal 2
 ./TestSingleCommitProver -v 18400
 ```
 
@@ -291,7 +301,7 @@ Creating proofs...
 
 
 
-## GUI Application Demo
+## GUI Application Demo(Optional)
 
 We provide a demo of a third-party email client to demonstrate our email ownership authentication process. Provide users with visualized email ownership authentication services.
 
@@ -299,9 +309,12 @@ We provide support for PLAIN, LOGIN and Google OAuth2 authentication methods in 
 
 ### How to build
 
+**node** version>=18.x
+
 ```
 sudo apt update
-sudo apt install nodejs
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt-get install -y nodejs
 ```
 
 ### **How to run**
@@ -311,6 +324,4 @@ cd TestFreeAuth/ApplicationDemo
 npm install
 npm run serve  # build project & run
 ```
-
-
 
