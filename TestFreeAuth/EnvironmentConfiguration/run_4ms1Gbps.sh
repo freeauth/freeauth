@@ -13,7 +13,6 @@ stage_print() {
     echo "========================================"
 }
 
-tc qdisc delete dev lo root
 
 stage_print "Set latency and bandwidth to 4ms and 1Gbps"
 #Set latency and bandwidth to 20ms and 1Gbps
