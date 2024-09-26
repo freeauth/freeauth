@@ -9,7 +9,6 @@ project_build_out="$project_root/build"
 
 rust_project_root="$project_root/TestFreeAuth/StatementGeneration"
 circuits_path="$project_root/2pc/key-derivation"
-echo "$project_root"
 export CARGO_TARGET_DIR="$project_build_out"
 stage_print() {
     echo "========================================"

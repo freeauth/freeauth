@@ -29,7 +29,7 @@ sleep 1
 stage_print "Running test programs"
 stage_print "Test1: Email Ownership Authentication"
 cd "$project_build_out"
-echo "$project_build_out"
+
 killall TestSMTPServer || true
 killall TestSMTPVerifier || true
 killall TestSingleCommitVerifier || true
