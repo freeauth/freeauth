@@ -1,7 +1,10 @@
 #!/bin/bash
 set -e
-project_root="../../$(dirname $0)"
+project_root="$(dirname $0)"
 project_root="$(realpath $project_root)"
+project_root="$(dirname $project_root)"
+project_root="$(dirname $project_root)"
+
 project_build_out="$project_root/build"
 rust_project_root="$project_root/TestFreeAuth/StatementGeneration"
 circuits_path="$project_root/2pc/key-derivation"
