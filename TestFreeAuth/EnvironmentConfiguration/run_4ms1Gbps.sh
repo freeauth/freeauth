@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-project_root="$(dirname $0)"
+project_root="../../$(dirname $0)"
 project_root="$(realpath $project_root)"
 project_build_out="$project_root/build"
 rust_project_root="$project_root/TestFreeAuth/StatementGeneration"
@@ -12,6 +12,16 @@ stage_print() {
     date
     echo "========================================"
 }
+
+tc qdisc delete dev lo root
+
+stage_print "Set latency and bandwidth to 4ms and 1Gbps"
+#Set latency and bandwidth to 20ms and 1Gbps
+tc qdisc add dev lo root handle 1:0 htb default 1
+tc class add dev lo parent 1:0 classid 1:1 htb rate 1Gbps burst 15k
+tc qdisc add dev lo parent 1:1 handle 2:0 netem delay 2ms 1ms
+
+sleep 1
 
 #RUN Test1: Email Ownership Authentication
 stage_print "Running test programs"
@@ -62,8 +72,11 @@ stage_print "Test3: Statement Generation"
 
 stage_print "Finished successfully"
 
+
 killall TestSMTPServer || true
 killall TestSMTPVerifier || true
 killall TestSingleCommitVerifier || true
+
+tc qdisc delete dev lo root
 
 stage_print "Cleaned all Processes"
