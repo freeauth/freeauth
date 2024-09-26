@@ -17,7 +17,7 @@ fi
 #Set latency and bandwidth to 20ms and 1Gbps
 tc qdisc add dev lo root handle 1:0 htb default 1
 # Parameters obtained after testing on the server
-tc class add dev lo parent 1:0 classid 1:1 htb rate 140Mbps burst 32k
+tc class add dev lo parent 1:0 classid 1:1 htb rate 180Mbps burst 32k
 tc qdisc add dev lo parent 1:1 handle 2:0 netem delay 10ms 1ms
 
 sleep 1
