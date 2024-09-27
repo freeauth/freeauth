@@ -25,5 +25,5 @@ ping -c 5 127.0.0.1
 sleep 1
 
 stage_print "Please check if bandwidth is configured successfully"
-iperf -s &
-iperf -c 127.0.0.1
+iperf3 -s &
+iperf3 -c 127.0.0.1

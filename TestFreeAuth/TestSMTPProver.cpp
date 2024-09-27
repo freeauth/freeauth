@@ -157,28 +157,28 @@ int main(int argc, char *argv[]) {
   printf("==============Time data print==============\n");
   auto duration = std::chrono::duration_cast<std::chrono::duration<double>>(
       begin_connect_to_server - begin_connect_to_verifier);
-  printf("Preproc all handshake circuits before connect to server time costs: "
+  printf("TLS Connection Offline Time: "
          "%.6f\n",
          //  "read: %lu B write: %lu B\n",
          duration.count());
         //  ,bandwidth_phase_0.first, bandwidth_phase_0.second);
   duration = std::chrono::duration_cast<std::chrono::duration<double>>(
       begin_preproc_all_aes_gcm_circuits - begin_connect_to_server);
-  printf("Three party handshake total time costs: %.6f\n",
+  printf("TLS Connection Online Time: %.6f\n",
          //  " read: %lu B write: %lu B\n",
          duration.count());
         //  , bandwidth_phase_1.first - bandwidth_phase_0.first,
       // bandwidth_phase_1.second - bandwidth_phase_0.second);
   duration = std::chrono::duration_cast<std::chrono::duration<double>>(
       begin_aes_gcm - begin_preproc_all_aes_gcm_circuits);
-  printf("Preproc AES-GCM-128 circuits time costs: %.6f\n",
+  printf("Authentication(SMTP) Offline Time: %.6f\n",
          //  " read: %lu B write: %lu B\n",
          duration.count());
         //  ,bandwidth_phase_2.first - bandwidth_phase_1.first,
       // bandwidth_phase_2.second - bandwidth_phase_1.second);
   duration = std::chrono::duration_cast<std::chrono::duration<double>>(
       end_aes_gcm_dec - begin_aes_gcm);
-  printf("Run threeparty SMTP auth proccess time costs: %.6f\n",
+  printf("Authentication(SMTP) Online Time: %.6f\n",
          //  " read: %lu B write: %lu B\n",
          duration.count());
         //  bandwidth_phase_3.first - bandwidth_phase_2.first,

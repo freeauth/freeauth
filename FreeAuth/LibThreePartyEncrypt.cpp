@@ -449,6 +449,7 @@ bool ThreePartyrEncrypt::commit_email_address(SSL *ssl,
     return false;
   }
   SSL *verifier = ssl->verifier;
+  auto begin_commit_proc = std::chrono::steady_clock::now();
   if (!ssl->commit_circuit) {
     ssl->commit_circuit = EmpWrapperAG2PC::build_commit_circuit(
         verifier, emp::BOB, EmpWrapperAG2PCConstants::COMMIT_CIRCUIT_TAG);
@@ -458,6 +459,10 @@ bool ThreePartyrEncrypt::commit_email_address(SSL *ssl,
     }
     ssl->commit_circuit->do_preproc();
   }
+  auto end_commit_proc = std::chrono::steady_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::duration<double>>(
+      end_commit_proc - begin_commit_proc);
+  printf("Commitment Offline: %.6f\n",duration.count());
   
   std::array<uint8_t, 16*EmpWrapperAG2PCConstants::COMMIT_INPUT_BLOCK_NUM> outaes;
   std::array<uint8_t, 16> iv{};
@@ -470,10 +475,15 @@ bool ThreePartyrEncrypt::commit_email_address(SSL *ssl,
   Util::xor_func(ssl->client_iv.begin(), iv.begin(), 12);
   iv[15] = 2;
   Util::print_hex_data(iv, "IV of commit: ");
+  auto begin_commit = std::chrono::steady_clock::now();
   // Run 2PC
   if(!run_commit_circuit(ssl->commit_circuit, ssl->client_key_share, iv, email_address, random_val, outhash, outaes))
     current_state = STATE_ERROR;
     return false;
+  auto end_commit = std::chrono::steady_clock::now();
+  duration = std::chrono::duration_cast<std::chrono::duration<double>>(
+      end_commit - begin_commit);
+  printf("Commitment Online: %.6f\n",duration.count());
   Util::print_hex_data(outhash, "SHA256 of commit: ");
   Util::print_hex_data(outaes, "AES of commit: ");
 
