@@ -59,5 +59,5 @@ int main(int argc, char *argv[]) {
   auto end_commit = std::chrono::steady_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::duration<double>>(
       end_commit - begin_conmmit);
-  printf("Commit time costs: %.6f\n",duration.count());
+  printf("Total Commit Time Costs: %.6f\n",duration.count());
 }

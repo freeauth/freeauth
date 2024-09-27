@@ -462,7 +462,7 @@ bool ThreePartyrEncrypt::commit_email_address(SSL *ssl,
   auto end_commit_proc = std::chrono::steady_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::duration<double>>(
       end_commit_proc - begin_commit_proc);
-  printf("Commitment Offline: %.6f\n",duration.count());
+  printf("Commitment Offline Time: %.6f\n",duration.count());
   
   std::array<uint8_t, 16*EmpWrapperAG2PCConstants::COMMIT_INPUT_BLOCK_NUM> outaes;
   std::array<uint8_t, 16> iv{};
@@ -483,7 +483,7 @@ bool ThreePartyrEncrypt::commit_email_address(SSL *ssl,
   auto end_commit = std::chrono::steady_clock::now();
   duration = std::chrono::duration_cast<std::chrono::duration<double>>(
       end_commit - begin_commit);
-  printf("Commitment Online: %.6f\n",duration.count());
+  printf("Commitment Online Time: %.6f\n",duration.count());
   Util::print_hex_data(outhash, "SHA256 of commit: ");
   Util::print_hex_data(outaes, "AES of commit: ");
 
