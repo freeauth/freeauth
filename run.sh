@@ -66,4 +66,12 @@ killall TestSMTPServer || true
 killall TestSMTPVerifier || true
 killall TestSingleCommitVerifier || true
 
+stage_print "WAN Setting: Latency 20ms and bandwidth 1Gbps"
+
+if tc -s qdisc ls dev lo | grep -q "noqueue"; then
+    echo ""
+else
+    tc qdisc del dev lo root
+fi
+
 stage_print "Cleaned all Processes"

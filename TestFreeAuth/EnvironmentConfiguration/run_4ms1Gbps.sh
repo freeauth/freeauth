@@ -7,18 +7,15 @@ stage_print() {
 }
 
 
-stage_print "Set latency and bandwidth to 20ms and 1Gbps"
+stage_print "LAN Setting: Latency 4ms and bandwidth 1Gbps"
 
-if sudo tc -s qdisc ls dev lo | grep -q "noqueue"; then
+if tc -s qdisc ls dev lo | grep -q "noqueue"; then
     echo ""
 else
-    sudo tc qdisc del dev lo root
+    tc qdisc del dev lo root
 fi
 #Set latency and bandwidth to 20ms and 1Gbps
-tc qdisc add dev lo root handle 1:0 htb default 1
-# Parameters obtained after testing on the server
-tc class add dev lo parent 1:0 classid 1:1 htb rate 140Mbps burst 32k
-tc qdisc add dev lo parent 1:1 handle 2:0 netem delay 2ms 1ms
+tc qdisc add dev lo root netem rate 1Gbit delay 2ms
 
 sleep 1
 
