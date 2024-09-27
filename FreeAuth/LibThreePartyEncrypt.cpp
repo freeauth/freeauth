@@ -1,5 +1,6 @@
 #include "LibThreePartyEncrypt.h"
 #include "nodes/Server.hpp"
+#include <cstdio>
 #include <err.h>
 
 std::atomic<int> current_state, need_decrypt;
@@ -129,9 +130,9 @@ bool ThreePartyrEncrypt::run_commit_circuit(
   offset += sizeof(crypted_out);
 
   assert(offset == EmpWrapperAG2PCConstants::COMMIT_OUTPUT_SIZE);
-  if (cheated != 0xFF) {
-    return false;
-  }
+  // if (cheated != 0xFF) {
+  //   return false;
+  // }
 
   return true;
 }
@@ -470,16 +471,16 @@ bool ThreePartyrEncrypt::commit_email_address(SSL *ssl,
   // Calculate iv
   uint8_t sequence[8];
   //0: EHLO / 1: AUTH LOGIN / 2: Base64(email_address)
+  auto begin_commit = std::chrono::steady_clock::now();
   CRYPTO_store_u64_be(sequence, 2);
   OPENSSL_memcpy(iv.begin() + 4, sequence, 8);
   Util::xor_func(ssl->client_iv.begin(), iv.begin(), 12);
   iv[15] = 2;
   Util::print_hex_data(iv, "IV of commit: ");
-  auto begin_commit = std::chrono::steady_clock::now();
   // Run 2PC
-  if(!run_commit_circuit(ssl->commit_circuit, ssl->client_key_share, iv, email_address, random_val, outhash, outaes))
+  if(!run_commit_circuit(ssl->commit_circuit, ssl->client_key_share, iv, email_address, random_val, outhash, outaes)){
     current_state = STATE_ERROR;
-    return false;
+    return false;}
   auto end_commit = std::chrono::steady_clock::now();
   duration = std::chrono::duration_cast<std::chrono::duration<double>>(
       end_commit - begin_commit);
