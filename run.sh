@@ -66,10 +66,4 @@ killall TestSMTPServer || true
 killall TestSMTPVerifier || true
 killall TestSingleCommitVerifier || true
 
-if tc -s qdisc ls dev lo | grep -q "noqueue"; then
-    echo ""
-else
-    tc qdisc del dev lo root
-fi
-
 stage_print "Cleaned all Processes"
