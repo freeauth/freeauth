@@ -8,7 +8,7 @@ COPY . /freeauth
 
 # Install necessary dependencies and clean up apt cache to reduce image size
 RUN apt-get update && apt-get install -y \
-    cmake make gcc g++ rustc cargo golang git libssl-dev time psmisc iproute2 iperf3 \
+    cmake make gcc g++ rustc cargo golang git libssl-dev time psmisc iproute2 iperf3 iputils-ping\
     && apt clean
 
 # Ensure scripts have executable permissions

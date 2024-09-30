@@ -408,10 +408,4 @@ cd /freeauth/build
 
 ### How to use
 
-Our demo supports LOGIN,PLAIN and Gmail's OAUTH2 authentication methods. Currently Gmail requires users to use only OAUTH2 method for email authentication, but the SSO service we use from Google is a beta version, which can only provide SSO service for email addresses added in the test list. Due to the requirement of anonymous review, we can't add your email address, so you can't authenticate to Gmail at the current stage. So, please choose to accept email addresses that use account passwords or  authorization codes for login authentication for verification.
-
-<img src="README.assets/image-20240928122604093.png" alt="image-20240928122604093" style="zoom: 33%;" />
-
-<img src="README.assets/屏幕截图 2024-09-28 130629.png" alt="屏幕截图 2024-09-28 130629" style="zoom: 33%;" />
-
-<img src="README.assets/image-20240930160029898.png" alt="image-20240930160029898" style="zoom: 33%;" />
+Our demo supports LOGIN,PLAIN and Gmail's OAUTH2 authentication methods, but we can't provide Gmail's OAUTH2 functionality for you due to Google's limitation. Currently Gmail requires users to only use OAUTH2 method for email authentication, but the OAUTH2 service we use from Google is a beta version, which can only provide OAUTH2 service for email addresses added in the test list. Due to the requirement of anonymous review, we can't add your email address to the test list, so you can't authenticate to Gmail at the current stage. So, please choose another email service provider that use account passwords or authorization codes for login authentication.
