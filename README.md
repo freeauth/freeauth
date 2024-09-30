@@ -120,7 +120,7 @@ Please **DO NOT** modify the apt commands, we need to install all the recommend 
 
 ```
 sudo apt update
-sudo apt -y install cmake make gcc g++ rustc cargo golang git libssl-dev time psmisc iproute2 iperf3
+sudo apt -y install cmake make gcc g++ rustc cargo golang git libssl-dev time psmisc iproute2 iperf3 iputils-ping
 ```
 
 ### Building FreeAuth
@@ -409,3 +409,9 @@ cd /freeauth/build
 ### How to use
 
 Our demo supports LOGIN,PLAIN and Gmail's OAUTH2 authentication methods. Currently Gmail requires users to use only OAUTH2 method for email authentication, but the SSO service we use from Google is a beta version, which can only provide SSO service for email addresses added in the test list. Due to the requirement of anonymous review, we can't add your email address, so you can't authenticate to Gmail at the current stage. So, please choose to accept email addresses that use account passwords or  authorization codes for login authentication for verification.
+
+<img src="README.assets/image-20240928122604093.png" alt="image-20240928122604093" style="zoom: 33%;" />
+
+<img src="README.assets/屏幕截图 2024-09-28 130629.png" alt="屏幕截图 2024-09-28 130629" style="zoom: 33%;" />
+
+<img src="README.assets/image-20240930160029898.png" alt="image-20240930160029898" style="zoom: 33%;" />
