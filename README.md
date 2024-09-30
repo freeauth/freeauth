@@ -397,12 +397,12 @@ sudo apt-get install -y nodejs
 
 ```
 ## RUN DEMO
-cd /freeauth/TestApplicationDemo
+cd freeauth/TestApplicationDemo
 npm install
 npm run serve  # build project & run
 
 ## RUN Verifier
-cd /freeauth/build
+cd freeauth/build
 ./TestSMTPVerifier
 ```
 
