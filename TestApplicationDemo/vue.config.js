@@ -9,6 +9,7 @@ module.exports = {
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
+    // for tests
     proxy: {
       '/api': {
         target: 'http://127.0.0.1:5000',

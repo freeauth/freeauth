@@ -26,8 +26,9 @@ namespace ThreePartyrEncrypt {
     std::array<uint8_t, 16*EmpWrapperAG2PCConstants::COMMIT_INPUT_BLOCK_NUM> &crypted_out) noexcept;
 }
 
+// only for test
 void onError(const char *message) {
-  std::cerr << "[Error] " << message <<" "<< strerror(errno) << std::endl
-            << "The program will exit now!" << std::endl;
+  // std::cerr << "[Error] " << message <<" "<< strerror(errno) << std::endl
+  //           << "The program will exit now!" << std::endl;
   exit(1);
 }
