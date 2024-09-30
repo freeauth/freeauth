@@ -27,7 +27,6 @@ We provide a demo of a third-party email client to demonstrate our email ownersh
 - **TestFreeAuth/TestSMTP*:** These files contain the implementation of email ownership authentication for Prover, Verifier and Server. A local presentation of the email ownership authentication functionality can be achieved by running these three files.
 - **TestFreeAuth/TestSingleCommit*:** These files contain the implementation of commitment generation for Prover and Verifier. A local presentation of the commitment generation functionality can be achieved by running these two files. 
 - **TestFreeAuth/StatementGeneration:** This folder contains zero-knowledge proof code for three statements generation based on [arkworks-rs](https://github.com/arkworks-rs/groth16.git). A local presentation of zero-knowledge proof generation for the three statements can be achieved by running these files.
-- **TestFreeAuth/ApplicationDemo:** This folder contains the email client demo based on VUE3.js and Electron, integrated with FreeAuth's email ownership authentication.
 
 **boringssl/:** This directory contains a tweaked version of  [BoringSSL](https://github.com/google/boringssl.git). BoringSSL is a fork of OpenSSL that is designed to meet Google's needs. DiStefano uses BoringSSL for TLS functionality, so we inherited it and made some more modifications for FreeAuth.
 
@@ -36,6 +35,8 @@ We provide a demo of a third-party email client to demonstrate our email ownersh
 **emp/:** This directory contains a tweaked version of emptool-kit(including [emp-ot](https://github.com/emp-toolkit/emp-ot.git), [emp-ag2pc](https://github.com/emp-toolkit/emp-ag2pc.git) and [emp-tool](https://github.com/emp-toolkit/emp-tool.git)). FreeAuth uses emp for all MPC functionality.
 
 **2pc/:** This directory is a quick-access link to the Distefano/2pc/ folder and contains all the circuits and circuit generation files used in Distefano and FreeAuth.
+
+**(Optional)TestApplicationDemo:** This folder contains the email client demo based on VUE3.js and Electron, integrated with FreeAuth's email ownership authentication.
 
 ## **Requirements**
 
@@ -71,9 +72,10 @@ We provide a demo of a third-party email client to demonstrate our email ownersh
 
 We have completed the deployment and compilation of FreeAuth on a public Artifact VM provided by the committee, which you can access directly to run the compiled files. Since the committee does not allow the VM password to be made public, please refer to the comment on HotCRP for the connection details and password. After connecting to the Artifact VM, execute the following commands to run the test sample.
 
-```
 To connect use "ssh artifacts@acsac-x7e8-228-base.artifacts.measurement.network'
 password: see HotCRP
+
+```
 cd freeauth
 ./run.sh
 ```
@@ -84,11 +86,30 @@ The environment used for docker is Ubuntu 22.04, and it takes about 4 mins to bu
 
 Download the zip from https://anonymous.4open.science/r/freeauth-543F, unzip it, and then execute the following commands.
 
+Turn on Container:
+
 ```
 cd freeauth
 sudo snap refresh && sudo snap install docker  #install docker
 sudo docker build -t freeauth .  
-sudo docker run -it freeauth    
+sudo docker run -it freeauth /bin/bash
+```
+
+If you need to emulate the **experimental environment**  in Container, turn on Container with the following command：
+
+```
+sudo docker run -it --cap-add=NET_ADMIN freeauth
+```
+
+To open another terminals for the docker environment:
+
+```
+#Run the container
+sudo docker run -it freeauth /bin/bash
+#Retrieve the docker container id
+sudo docker ps -a
+#open another terminal
+sudo docker exec -it <container id> /bin/bash
 ```
 
 **However, if you want to deploy  FreeAuth locally, please do the following.**
@@ -99,7 +120,7 @@ Please **DO NOT** modify the apt commands, we need to install all the recommend 
 
 ```
 sudo apt update
-sudo apt -y install cmake make gcc g++ rustc cargo golang git libssl-dev time psmisc
+sudo apt -y install cmake make gcc g++ rustc cargo golang git libssl-dev time psmisc iproute2 iperf3
 ```
 
 ### Building FreeAuth
@@ -235,12 +256,14 @@ This part of the result indicates that during the email ownership authentication
 
 ```
 ==============Time data print==============
-Preproc all handshake circuits before connect to server time costs: 7.857054
-Three party handshake total time costs: 1.363712
-Preproc AES-GCM-128 circuits time costs: 4.460449
-Run threeparty SMTP auth proccess time costs: 0.351344
-Total time costs: 14.032559
+TLS Connection Offline Time: 11.757033
+TLS Connection Online Time: 1.392341
+Authentication(SMTP) Offline Time: 5.835701
+Authentication(SMTP) Online Time: 0.351679
+Total time costs: 19.336754
 ```
+
+The output is the data source for Line 2 and Line 3 of **Table 2** in the paper。
 
 **Test2: Commitment Generation**
 
@@ -264,8 +287,12 @@ This part of the result indicates that the time for commiting the single block i
 ```
 Test2: Commitment Generation
 ========================================
-Commit time costs: 2.703217
+Commitment Offline Time: 4.590050
+Commitment Online Time: 0.089836
+Total Commit Time Costs: 4.679990
 ```
+
+The output is the data source for Line 4 of **Table 2** in the paper。
 
 **Test3: Statement Generation**
 
@@ -299,13 +326,61 @@ Creating proofs...
 1.1486866629999999 seconds
 ```
 
+The output is the data source for the **Table 3** in the paper
 
+## Result Comparsion
+
+In the paper, we show three tables, where the results in Table 1 are derived from measurements of services provided by current email service providers and are not related to FreeAuth's functionality. Table 2 shows the output results of FreeAuth's <u>email ownership authentication</u> and <u>commitment generation</u> functions, and Table 3 shows the output of the <u>statement generation</u> function.
+
+The results in Table 2 are tested under LAN and WAN network settings respectively. In the paper we use physical network cables to connect multiple devices and test after setting the bandwidth and latency. Due to the complexity of deploying multiple devices, we provide an initial replication of the results in the paper by providing commands to configure the environment locally.
+
+We will limit the **lo network card**:
+
+```
+## View the current configuration
+sudo tc -s qdisc ls dev lo
+
+## If a configuration exists, clear all current configurations for the lo card
+sudo tc qdisc del dev lo root
+```
+
+（1）LAN Setting: Latency 4ms and bandwidth 1Gbps
+
+```
+## LAN Setting
+sudo tc qdisc add dev lo root netem rate 1Gbit delay 2ms
+## Run tests
+cd /freeauth 
+./run.sh
+## clear configurations
+sudo tc qdisc del dev lo root
+```
+
+（2）WAN Setting: Latency 20ms and bandwidth 1Gbps
+
+```
+## WAN Setting
+sudo tc qdisc add dev lo root netem rate 1Gbit delay 10ms
+## Run tests
+cd /freeauth 
+./run.sh
+## clear configurations
+sudo tc qdisc del dev lo root
+```
+
+**Table 3:**  Table 3 contains the results of the **Statement Generation**, which are tested by Test3. The results of Test3 runs are independent of bandwidth and latency.
+
+**NOTE:** Differences in testing environments and network limitation methods can cause our test results to be slightly different from those presented in the paper.
 
 ## GUI Application Demo(Optional)
 
+**NOTE: Since Docker is headless environment, we did not deploy the demo on it. We highly recommend running this demo locally.**
+
 We provide a demo of a third-party email client to demonstrate our email ownership authentication process. Provide users with visualized email ownership authentication services.
 
-We provide support for PLAIN, LOGIN and Google OAuth2 authentication methods in this demo, you can enter the relevant information for actual testing. Please note that this demo only supports TLS link based on TLSv1.3 implementation at present, please make sure that the email server you try can provide TLSv1.3 service. Meanwhile, since the Google OAuth2 service we use is a beta service, only the email address that are added in the test list can get the OAuth2 authentication service. Since this is a blind review phase, we recommend using email addresses that do not require OAuth2 authentication for experimental testing.
+We provide support for PLAIN, LOGIN and Google OAuth2 authentication methods in this demo, you can enter the relevant information for actual testing. Please note that this demo only supports TLS link based on TLSv1.3 implementation at present, please make sure that the email server you try can provide TLSv1.3 service. 
+
+Meanwhile, since the Google OAuth2 service we use is a beta service, only the email address that are added in the test list can get the OAuth2 authentication service. Since this is a blind review phase, we recommend using email addresses that do not require OAuth2 authentication for experimental testing.
 
 ### How to build
 
@@ -313,6 +388,7 @@ We provide support for PLAIN, LOGIN and Google OAuth2 authentication methods in 
 
 ```
 sudo apt update
+sudo apt install curl
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
@@ -320,8 +396,16 @@ sudo apt-get install -y nodejs
 ### **How to run**
 
 ```
-cd TestFreeAuth/ApplicationDemo
+## RUN DEMO
+cd /freeauth/TestApplicationDemo
 npm install
 npm run serve  # build project & run
+
+## RUN Verifier
+cd /freeauth/build
+./TestSMTPVerifier
 ```
 
+### How to use
+
+Our demo supports LOGIN,PLAIN and Gmail's OAUTH2 authentication methods. Currently Gmail requires users to use only OAUTH2 method for email authentication, but the SSO service we use from Google is a beta version, which can only provide SSO service for email addresses added in the test list. Due to the requirement of anonymous review, we can't add your email address, so you can't authenticate to Gmail at the current stage. So, please choose to accept email addresses that use account passwords or  authorization codes for login authentication for verification.
