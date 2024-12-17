@@ -1,6 +1,6 @@
 # FreeAuth
 
-FreeAuth(https://anonymous.4open.science/r/freeauth-543F) is a novel universal and privacy-enhanced email ownership verification scheme that allows users to selectively disclose information associated with their email addresses. The submitted artifact includes the FreeAuth prototype and a prototype of an integrated email client, which mainly accomplish email ownership authentication, commitment generation, and statement generation. Section 5 of the submitted paper presents the test results of these features. We will submit the complete FreeAuth prototype code along with a virtual machine image containing the correctly compiled binaries.
+FreeAuth(https://github.com/freeauth/freeauth.git) is a novel universal and privacy-enhanced email ownership verification scheme that allows users to selectively disclose information associated with their email addresses. The submitted artifact includes the FreeAuth prototype and a prototype of an integrated email client, which mainly accomplish email ownership authentication, commitment generation, and statement generation. Section 5 of the submitted paper presents the test results of these features. We will submit the complete FreeAuth prototype code along with a virtual machine image containing the correctly compiled binaries.
 
 ## Components
 
@@ -68,23 +68,15 @@ We provide a demo of a third-party email client to demonstrate our email ownersh
 
 ## How to build
 
-### Testing on **an** Artifact VM
-
-We have completed the deployment and compilation of FreeAuth on a public Artifact VM provided by the committee, which you can access directly to run the compiled files. Since the committee does not allow the VM password to be made public, please refer to the comment on HotCRP for the connection details and password. After connecting to the Artifact VM, execute the following commands to run the test sample.
-
-To connect use "ssh artifacts@acsac-x7e8-228-base.artifacts.measurement.network'
-password: see HotCRP
-
-```
-cd freeauth
-./run.sh
-```
-
 ### Testing in a Docker container
 
 The environment used for docker is Ubuntu 22.04, and it takes about 4 mins to build the image.
 
-Download the zip from https://anonymous.4open.science/r/freeauth-543F, unzip it, and then execute the following commands.
+```
+git clone https://github.com/freeauth/freeauth.git
+```
+
+Then execute the following commands.
 
 Turn on Container:
 
@@ -127,11 +119,9 @@ sudo apt -y install cmake make gcc g++ rustc cargo golang git libssl-dev time ps
 
 We've combined the build commands into a single script **build.sh**.
 
-Currently, you cannot use `git clone` to download because it is not supported by the anonymous repository we are using. Users need to manually download the zip from https://anonymous.4open.science/r/freeauth-543F, unzip it, and then execute the following commands.
-
 ```
+git clone https://github.com/freeauth/freeauth.git
 cd freeauth
-chmod +x build.sh run.sh
 ./build.sh
 ```
 
